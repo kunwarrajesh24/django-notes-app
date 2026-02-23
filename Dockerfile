@@ -1,9 +1,10 @@
+# Use Python 3.9 base image
 FROM python:3.9
 
-# Set correct working directory (IMPORTANT FIX)
+# Set working directory
 WORKDIR /app
 
-# Copy requirements first (for caching)
+# Copy requirements
 COPY requirements.txt /app/
 
 # Install system dependencies
@@ -12,14 +13,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN pip install mysqlclient
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy full project (including manage.py & db.sqlite3)
+# Copy app code
 COPY . /app/
 
-# Expose Django port
+# Expose port
 EXPOSE 8000
 
-# 🔥 Auto migrate + run server (BEST PRACTICE)
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Use python3 explicitly
+CMD ["sh", "-c", "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"]
