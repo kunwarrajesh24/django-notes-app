@@ -1,14 +1,13 @@
 FROM python:3.9
 
-# Set working directory
-WORKDIR /app/backend
+# Set correct working directory (IMPORTANT FIX)
+WORKDIR /app
 
 # Copy requirements first (for caching)
-COPY requirements.txt /app/backend
+COPY requirements.txt /app/
 
 # Install system dependencies
 RUN apt-get update \
-    && apt-get upgrade -y \
     && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
@@ -16,11 +15,11 @@ RUN apt-get update \
 RUN pip install mysqlclient
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
-COPY . /app/backend
+# Copy full project (including manage.py & db.sqlite3)
+COPY . /app/
 
 # Expose Django port
 EXPOSE 8000
 
-# 🔥 MOST IMPORTANT LINE (THIS WAS MISSING)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# 🔥 Auto migrate + run server (BEST PRACTICE)
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
