@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   web:
-     image: "kunwarrajesh2407/testapp:latest"
+    image: "kunwarrajesh2407/testapp:latest"
     ports:
       - "80:80"
     depends_on:
