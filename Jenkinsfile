@@ -3,7 +3,7 @@ pipeline{
     agent { label 'dev-server'}
     
     stages{
-        stage("Code clone"){
+        stage("My code is getting clone"){
             steps{
                 sh "whoami"
             clone("https://github.com/LondheShubham153/django-notes-app.git","main")
