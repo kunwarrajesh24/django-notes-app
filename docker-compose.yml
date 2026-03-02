@@ -1,9 +1,8 @@
 version: "3.8"
 
 services:
-  nginx:
-    build: ./nginx
-    container_name: nginx_cont
+  web:
+     image: "kunwarrajesh2407/testapp:latest"
     ports:
       - "80:80"
     depends_on:
