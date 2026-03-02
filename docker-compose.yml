@@ -1,9 +1,11 @@
+version: "3.8"
+
 services:
-  web:
-    image: kunwarrajesh2407/notes-app:latest
-    container_name: web_cont
+  nginx:
+    build: ./nginx
+    container_name: nginx_cont
     ports:
-      - "8080:8000"   # Changed from 80:80 to avoid port conflict
+      - "80:80"
     depends_on:
       - django_app
     restart: unless-stopped
