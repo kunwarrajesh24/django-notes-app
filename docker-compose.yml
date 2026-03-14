@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   nginx:
     build: ./nginx
@@ -26,25 +28,12 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
-    networks:
-      - notes-app-nw
-
-  db:
-    image: mysql:8
-    container_name: mysql_cont
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: notesdb
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/admin || exit 1"]
+      interval: 15s
+      timeout: 5s
       retries: 5
+      start_period: 40s
     networks:
-      - notes-app-nw
 
-networks:
-  notes-app-nw:
-    driver: bridge
+
